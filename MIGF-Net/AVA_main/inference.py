@@ -1,4 +1,6 @@
 import torch
+import os
+import sys
 import numpy as np
 import option
 from torch import nn
@@ -6,8 +8,11 @@ from torchvision.datasets.folder import default_loader
 from torchvision import models
 from torchvision import transforms
 from transformers import BertTokenizer, BertModel
-from AVA.module import CrossAttention_module, NLB_module, DSIGF_module
 import matplotlib.pyplot as plt
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(parent_dir)
+from Module import CrossAttention_module, NLB_module, DSIGF_module
 
 from transformers import logging
 logging.set_verbosity_error()
@@ -137,9 +142,6 @@ def get_score(y_pred):
 
 def single_inference():
     model = MIGFNet().to(device)
-    # state_dict = torch.load(f'D:\paper code\TANet\TANet-main\TANet-main\code\TANet-Demo-AVA_main\pth\epoch_a2.pt')
-    # print("Loaded state_dict keys:", state_dict.keys())
-    # print("Model state_dict keys:", model.state_dict().keys())
     model.load_state_dict(torch.load(
         f'/AVA_main/checkpoint/new-epoch_1_SignificanceResult(statistic=0.8421)_PearsonRResult(statistic=0.8554)_val_loss_0.0360_.pt'), strict=True)
     image = default_loader(f'D:/paper code/TANet/TANet-main/TANet-main/code/TANet-Demo-AVA/data/ava_samples/image/486506.jpg')
@@ -167,5 +169,6 @@ def single_inference():
 if __name__ == "__main__":
     cfg = option.config
     single_inference()
+
 
 
